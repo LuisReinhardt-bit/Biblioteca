@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Biblioteca</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-slate-50 text-slate-800">
+  <!-- Skip link (accesibilidad) -->
+  <a href="#contenido" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-lg focus:bg-white focus:px-3 focus:py-2 focus:shadow">
+    Saltar al contenido
+  </a>
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 border-b border-slate-200 bg-white/80 backdrop-blur">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+      <!-- Left: brand + hamburger -->
+      <div class="flex items-center gap-3">
+        <!-- Hamburger (solo móvil) -->
+        <button
+          id="btnMenu"
+          class="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300 lg:hidden"
+          aria-label="Abrir menú"
+          aria-controls="sidebarDrawer"
+          aria-expanded="false"
+          type="button"
+        >
+          <!-- Icon -->
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+
+        <div class="flex items-center gap-2">
+          <div class="grid h-9 w-9 place-items-center rounded-xl bg-slate-900 text-white">
+            <span class="text-sm font-semibold">LB</span>
+          </div>
+          <div class="leading-tight">
+            <p class="text-sm font-semibold">Biblioteca</p>
+            <p class="text-xs text-slate-500">Panel de administración</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center/Right: top nav (header menu) -->
+      <nav class="hidden items-center gap-1 lg:flex" aria-label="Menú principal">
+        <a href="#inicio" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">Inicio</a>
+        <a href="#usuarios" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">Usuarios</a>
+        <a href="#libros" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">Libros</a>
+        <a href="#prestamos" class="rounded-lg px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">Préstamos</a>
+        <a href="#salir" class="rounded-lg bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">Salir</a>
+      </nav>
+
+      <!-- Right: quick actions -->
+      <div class="hidden items-center gap-2 sm:flex">
+        <button class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-sm font-medium text-slate-700 shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300" type="button">
+          Ayuda
+        </button>
+        <div class="flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 shadow-sm">
+          <div class="h-8 w-8 rounded-full bg-slate-200"></div>
+          <div class="hidden md:block">
+            <p class="text-sm font-semibold leading-4">Administrador</p>
+            <p class="text-xs text-slate-500 leading-4">admin@biblioteca</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- LAYOUT -->
+  <div class="mx-auto grid max-w-7xl grid-cols-1 gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[280px_1fr]">
+    <!-- SIDEBAR (desktop) -->
+    <aside class="hidden lg:block" aria-label="Barra lateral">
+      <div class="sticky top-[76px] rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
+        <p class="mb-3 text-xs font-semibold uppercase tracking-wide text-slate-500">Navegación</p>
+        <nav class="space-y-1">
+          <a href="#inicio" class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+            <span class="grid h-8 w-8 place-items-center rounded-lg bg-slate-100">🏠</span>
+            Inicio
+          </a>
+          <a href="#libros" class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+            <span class="grid h-8 w-8 place-items-center rounded-lg bg-slate-100">📚</span>
+            Libros
+          </a>
+          <a href="#prestamos" class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+            <span class="grid h-8 w-8 place-items-center rounded-lg bg-slate-100">🗓️</span>
+            Préstamos
+          </a>
+
+          <div class="my-3 border-t border-slate-200"></div>
+
+          <a href="#salir" class="flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800">
+            <span class="grid h-8 w-8 place-items-center rounded-lg bg-white/10">🚪</span>
+            Salir
+          </a>
+        </nav>
+
+        <div class="mt-5 rounded-2xl bg-slate-50 p-4">
+          <p class="text-sm font-semibold">Tip rápido</p>
+          <p class="mt-1 text-sm text-slate-600">
+            Usa el buscador en “Libros” para localizar títulos, autores o ISBN.
+          </p>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main id="contenido" class="space-y-6">
+      <!-- HERO / SUMMARY -->
+      <section id="inicio" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <h1 class="text-xl font-bold">Dashboard</h1>
+            <p class="mt-1 text-sm text-slate-600">
+              Control general de usuarios, libros y préstamos.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-300" type="button">
+              Exportar
+            </button>
+            <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-slate-300" type="button">
+              Nuevo préstamo
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <article class="rounded-2xl border border-slate-200 p-4">
+            <p class="text-sm text-slate-500">Usuarios</p>
+            <p class="mt-1 text-2xl font-bold">1,248</p>
+            <p class="mt-1 text-sm text-slate-600">+24 esta semana</p>
+          </article>
+
+          <article class="rounded-2xl border border-slate-200 p-4">
+            <p class="text-sm text-slate-500">Libros</p>
+            <p class="mt-1 text-2xl font-bold">8,920</p>
+            <p class="mt-1 text-sm text-slate-600">120 nuevos registros</p>
+          </article>
+
+          <article class="rounded-2xl border border-slate-200 p-4">
+            <p class="text-sm text-slate-500">Préstamos activos</p>
+            <p class="mt-1 text-2xl font-bold">312</p>
+            <p class="mt-1 text-sm text-slate-600">48 vencen pronto</p>
+          </article>
+
+          <article class="rounded-2xl border border-slate-200 p-4">
+            <p class="text-sm text-slate-500">Morosidad</p>
+            <p class="mt-1 text-2xl font-bold">3.8%</p>
+            <p class="mt-1 text-sm text-slate-600">-0.6% vs mes pasado</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- USERS (solo sección de contenido; el menú principal lo tiene en header) -->
+      <section id="usuarios" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <header class="flex items-start justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-bold">Usuarios</h2>
+            <p class="mt-1 text-sm text-slate-600">
+              Administración básica: altas, estado y acciones rápidas.
+            </p>
+          </div>
+          <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" type="button">
+            Agregar usuario
+          </button>
+        </header>
+
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full min-w-[680px] border-separate border-spacing-0">
+            <thead>
+              <tr class="text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <th class="border-b border-slate-200 pb-3">Nombre</th>
+                <th class="border-b border-slate-200 pb-3">Correo</th>
+                <th class="border-b border-slate-200 pb-3">Rol</th>
+                <th class="border-b border-slate-200 pb-3">Estado</th>
+                <th class="border-b border-slate-200 pb-3 text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm">
+              <tr class="hover:bg-slate-50">
+                <td class="border-b border-slate-100 py-3 font-medium">María López</td>
+                <td class="border-b border-slate-100 py-3 text-slate-600">maria@correo.com</td>
+                <td class="border-b border-slate-100 py-3">Lector</td>
+                <td class="border-b border-slate-100 py-3">
+                  <span class="inline-flex items-center rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">Activo</span>
+                </td>
+                <td class="border-b border-slate-100 py-3 text-right">
+                  <button class="rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-slate-100" type="button">Ver</button>
+                  <button class="rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-slate-100" type="button">Editar</button>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-slate-50">
+                <td class="border-b border-slate-100 py-3 font-medium">Juan Pérez</td>
+                <td class="border-b border-slate-100 py-3 text-slate-600">juan@correo.com</td>
+                <td class="border-b border-slate-100 py-3">Bibliotecario</td>
+                <td class="border-b border-slate-100 py-3">
+                  <span class="inline-flex items-center rounded-full bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-700">Pendiente</span>
+                </td>
+                <td class="border-b border-slate-100 py-3 text-right">
+                  <button class="rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-slate-100" type="button">Ver</button>
+                  <button class="rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-slate-100" type="button">Editar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- BOOKS -->
+      <section id="libros" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <header class="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div>
+            <h2 class="text-lg font-bold">Libros</h2>
+            <p class="mt-1 text-sm text-slate-600">Consulta rápida del catálogo y acciones comunes.</p>
+          </div>
+
+          <div class="flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center">
+            <label class="w-full sm:w-72">
+              <span class="sr-only">Buscar libros</span>
+              <input
+                type="search"
+                placeholder="Buscar por título, autor o ISBN…"
+                class="w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-slate-300"
+              />
+            </label>
+            <button class="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" type="button">
+              Agregar libro
+            </button>
+          </div>
+        </header>
+
+        <div class="mt-4 grid grid-cols-1 gap-4 md:grid-cols-2">
+          <article class="rounded-2xl border border-slate-200 p-4 hover:shadow-sm">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h3 class="font-semibold">Cien años de soledad</h3>
+                <p class="text-sm text-slate-600">Gabriel García Márquez</p>
+                <p class="mt-1 text-xs text-slate-500">ISBN: 978-84-376-0494-7</p>
+              </div>
+              <span class="rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">Disponible</span>
+            </div>
+            <div class="mt-3 flex gap-2">
+              <button class="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium hover:bg-slate-50" type="button">Editar</button>
+              <button class="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium hover:bg-slate-50" type="button">Ver detalle</button>
+            </div>
+          </article>
+
+          <article class="rounded-2xl border border-slate-200 p-4 hover:shadow-sm">
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <h3 class="font-semibold">El principito</h3>
+                <p class="text-sm text-slate-600">Antoine de Saint-Exupéry</p>
+                <p class="mt-1 text-xs text-slate-500">ISBN: 978-84-261-4141-9</p>
+              </div>
+              <span class="rounded-full bg-amber-50 px-2 py-1 text-xs font-semibold text-amber-700">Prestado</span>
+            </div>
+            <div class="mt-3 flex gap-2">
+              <button class="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium hover:bg-slate-50" type="button">Editar</button>
+              <button class="rounded-lg border border-slate-200 px-3 py-1.5 text-sm font-medium hover:bg-slate-50" type="button">Ver detalle</button>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- LOANS -->
+      <section id="prestamos" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <header class="flex items-start justify-between gap-3">
+          <div>
+            <h2 class="text-lg font-bold">Préstamos</h2>
+            <p class="mt-1 text-sm text-slate-600">Registro y seguimiento de préstamos activos.</p>
+          </div>
+          <button class="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-slate-50" type="button">
+            Filtrar
+          </button>
+        </header>
+
+        <div class="mt-4 overflow-x-auto">
+          <table class="w-full min-w-[780px] border-separate border-spacing-0">
+            <thead>
+              <tr class="text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <th class="border-b border-slate-200 pb-3">Usuario</th>
+                <th class="border-b border-slate-200 pb-3">Libro</th>
+                <th class="border-b border-slate-200 pb-3">Inicio</th>
+                <th class="border-b border-slate-200 pb-3">Vence</th>
+                <th class="border-b border-slate-200 pb-3">Estado</th>
+                <th class="border-b border-slate-200 pb-3 text-right">Acciones</th>
+              </tr>
+            </thead>
+            <tbody class="text-sm">
+              <tr class="hover:bg-slate-50">
+                <td class="border-b border-slate-100 py-3 font-medium">María López</td>
+                <td class="border-b border-slate-100 py-3 text-slate-700">Cien años de soledad</td>
+                <td class="border-b border-slate-100 py-3 text-slate-600">2026-02-01</td>
+                <td class="border-b border-slate-100 py-3 text-slate-600">2026-02-15</td>
+                <td class="border-b border-slate-100 py-3">
+                  <span class="inline-flex items-center rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">Al día</span>
+                </td>
+                <td class="border-b border-slate-100 py-3 text-right">
+                  <button class="rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-slate-100" type="button">Renovar</button>
+                  <button class="rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-slate-100" type="button">Cerrar</button>
+                </td>
+              </tr>
+
+              <tr class="hover:bg-slate-50">
+                <td class="border-b border-slate-100 py-3 font-medium">Juan Pérez</td>
+                <td class="border-b border-slate-100 py-3 text-slate-700">El principito</td>
+                <td class="border-b border-slate-100 py-3 text-slate-600">2026-01-10</td>
+                <td class="border-b border-slate-100 py-3 text-slate-600">2026-01-24</td>
+                <td class="border-b border-slate-100 py-3">
+                  <span class="inline-flex items-center rounded-full bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-700">Vencido</span>
+                </td>
+                <td class="border-b border-slate-100 py-3 text-right">
+                  <button class="rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-slate-100" type="button">Notificar</button>
+                  <button class="rounded-lg px-3 py-1.5 text-sm font-medium hover:bg-slate-100" type="button">Cerrar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- EXIT (placeholder) -->
+      <section id="salir" class="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
+        <h2 class="text-lg font-bold">Salir</h2>
+        <p class="mt-1 text-sm text-slate-600">
+          Aquí normalmente iría la acción de cerrar sesión (logout) conectada a tu backend.
+        </p>
+        <button class="mt-4 rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-800" type="button">
+          Cerrar sesión
+        </button>
+      </section>
+    </main>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="mx-auto flex max-w-7xl flex-col gap-2 px-4 py-5 text-sm text-slate-600 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+      <p>© <span id="year"></span> Biblioteca — Panel de administración</p>
+      <p class="text-slate-500">Hecho con HTML semántico + Tailwind CSS + JS vanilla</p>
+    </div>
+  </footer>
+
+  <!-- DRAWER (sidebar móvil) -->
+  <div id="drawerRoot" class="fixed inset-0 z-50 hidden lg:hidden" aria-hidden="true">
+    <!-- Backdrop -->
+    <button
+      id="drawerBackdrop"
+      class="absolute inset-0 bg-slate-900/40"
+      type="button"
+      aria-label="Cerrar menú"
+      tabindex="-1"
+    ></button>
+
+    <!-- Panel -->
+    <aside
+      id="sidebarDrawer"
+      class="absolute left-0 top-0 h-full w-[85%] max-w-xs translate-x-[-100%] rounded-r-2xl bg-white p-4 shadow-xl transition-transform duration-200"
+      aria-label="Menú móvil"
+      role="dialog"
+      aria-modal="true"
+    >
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2">
+          <div class="grid h-9 w-9 place-items-center rounded-xl bg-slate-900 text-white">
+            <span class="text-sm font-semibold">LB</span>
+          </div>
+          <p class="text-sm font-semibold">Biblioteca</p>
+        </div>
+        <button
+          id="btnCloseDrawer"
+          class="rounded-lg border border-slate-200 bg-white px-3 py-2 text-slate-700 hover:bg-slate-50"
+          type="button"
+          aria-label="Cerrar"
+        >
+          ✕
+        </button>
+      </div>
+
+      <nav class="mt-4 space-y-1">
+        <a href="#inicio" class="drawerLink flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+          <span class="grid h-8 w-8 place-items-center rounded-lg bg-slate-100">🏠</span>
+          Inicio
+        </a>
+        <a href="#libros" class="drawerLink flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+          <span class="grid h-8 w-8 place-items-center rounded-lg bg-slate-100">📚</span>
+          Libros
+        </a>
+        <a href="#prestamos" class="drawerLink flex items-center gap-3 rounded-xl px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100">
+          <span class="grid h-8 w-8 place-items-center rounded-lg bg-slate-100">🗓️</span>
+          Préstamos
+        </a>
+
+        <div class="my-3 border-t border-slate-200"></div>
+
+        <a href="#salir" class="drawerLink flex items-center gap-3 rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-800">
+          <span class="grid h-8 w-8 place-items-center rounded-lg bg-white/10">🚪</span>
+          Salir
+        </a>
+      </nav>
+    </aside>
+  </div>
+
+  <script>
+    // Año footer
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Drawer móvil
+    const btnMenu = document.getElementById("btnMenu");
+    const drawerRoot = document.getElementById("drawerRoot");
+    const drawer = document.getElementById("sidebarDrawer");
+    const backdrop = document.getElementById("drawerBackdrop");
+    const btnClose = document.getElementById("btnCloseDrawer");
+    const drawerLinks = document.querySelectorAll(".drawerLink");
+
+    function openDrawer() {
+      drawerRoot.classList.remove("hidden");
+      drawerRoot.setAttribute("aria-hidden", "false");
+      btnMenu.setAttribute("aria-expanded", "true");
+      // small delay to allow transition
+      requestAnimationFrame(() => drawer.classList.remove("translate-x-[-100%]"));
+    }
+
+    function closeDrawer() {
+      drawer.classList.add("translate-x-[-100%]");
+      drawerRoot.setAttribute("aria-hidden", "true");
+      btnMenu.setAttribute("aria-expanded", "false");
+      // wait for transition
+      setTimeout(() => drawerRoot.classList.add("hidden"), 200);
+    }
+
+    btnMenu.addEventListener("click", openDrawer);
+    backdrop.addEventListener("click", closeDrawer);
+    btnClose.addEventListener("click", closeDrawer);
+
+    // cerrar al navegar
+    drawerLinks.forEach(a => a.addEventListener("click", closeDrawer));
+
+    // cerrar con ESC
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && !drawerRoot.classList.contains("hidden")) closeDrawer();
+    });
+  </script>
+</body>
+</html>
