@@ -24,8 +24,9 @@ class AuthController extends Controller
 
         $user = User::create([
             'name'     => $validated['nombre'],
-            'email'    => $validated['email'],
+            'email'    => $validated['email'], 
             'password' => Hash::make($validated['password']),
+            'user_type' => 'user', // Asignar un tipo de usuario por defecto
         ]);
 
         Auth::login($user);

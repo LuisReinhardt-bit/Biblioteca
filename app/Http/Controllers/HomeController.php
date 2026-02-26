@@ -3,11 +3,23 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Libro;
 
 class HomeController extends Controller
 {
     public function index()
     {
-        return view('home.index');
+        $user = auth()->user();
+        if ($user->user_type === 'admin') {
+            $libros = Libro::paginate(3);
+
+            return view('home.index', compact('libros'));
+        } else {
+            return view('home.index_user');
+        }
+
+
+         // Obtener todos los libros y paginarlos de 10 en 10
+        return view('home.index', compact('libros'));
     }
 }
