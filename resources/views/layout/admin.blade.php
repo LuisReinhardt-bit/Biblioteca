@@ -70,7 +70,7 @@
           </li>
 
           <li>
-            <a href=""
+            <a href=" {{ route('usuarios.index') }}"
                class="flex items-center gap-3 rounded-xl px-3 py-2 text-slate-700 hover:bg-slate-100">
               <span class="text-indigo-600">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -187,6 +187,7 @@
                 <div class="leading-tight">
                   <p class="text-sm font-semibold">{{ Auth::user()->name ?? 'Admin' }}</p>
                   <p class="text-xs text-slate-600">{{ Auth::user()->email ?? 'admin@biblioteca' }}</p>
+
                 </div>
               </div>
 
