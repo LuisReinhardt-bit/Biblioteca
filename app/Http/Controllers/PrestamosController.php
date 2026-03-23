@@ -17,7 +17,18 @@ class PrestamosController extends Controller
 
     public function create()
     {
-        return view('prestamos.create');
+        $usuario = null;
+        $libros = null;
+
+        if (session()->has('usuario_id_encontrado')) {
+            $usuario = User::find(session('usuario_id_encontrado'));
+        }
+
+        if (session()->has('mostrar_libros') && $usuario) {
+            $libros = Libro::where('estatus', 0)->orderBy('id', 'asc')->get();
+        }
+
+        return view('prestamos.create', compact('usuario', 'libros'));
     }
 
     public function buscar_usuario(Request $request)
@@ -26,13 +37,25 @@ class PrestamosController extends Controller
         $usuario_nombre = $request->input('usuario_nombre');
 
         if (!empty($usuario_id)) {
-            $usuario = User::findOrFail($usuario_id);
-            return view('prestamos.create', compact('usuario'));
+            $usuario = User::find($usuario_id);
+
+            if (!$usuario) {
+                return redirect()->route('prestamos.create')->with('error', 'Usuario no encontrado.');
+            }
+
+            return redirect()->route('prestamos.create')
+                ->with('usuario_id_encontrado', $usuario->id);
         }
 
         if (!empty($usuario_nombre)) {
-            $usuario = User::where('name', 'like', '%' . $usuario_nombre . '%')->firstOrFail();
-            return view('prestamos.create', compact('usuario'));
+            $usuario = User::where('name', 'like', '%' . $usuario_nombre . '%')->first();
+
+            if (!$usuario) {
+                return redirect()->route('prestamos.create')->with('error', 'Usuario no encontrado.');
+            }
+
+            return redirect()->route('prestamos.create')
+                ->with('usuario_id_encontrado', $usuario->id);
         }
 
         return redirect()->route('prestamos.create')->with('error', 'Debes ingresar ID o nombre de usuario para buscar.');
@@ -41,10 +64,15 @@ class PrestamosController extends Controller
     public function select_libro(Request $request)
     {
         $usuario_id = $request->input('usuario_id');
-        $usuario = User::findOrFail($usuario_id);
-        $libros = Libro::where('estatus', 0)->orderBy('id', 'asc')->get();
+        $usuario = User::find($usuario_id);
 
-        return view('prestamos.create', compact('usuario', 'libros'));
+        if (!$usuario) {
+            return redirect()->route('prestamos.create')->with('error', 'Usuario no encontrado.');
+        }
+
+        return redirect()->route('prestamos.create')
+            ->with('usuario_id_encontrado', $usuario->id)
+            ->with('mostrar_libros', true);
     }
 
     public function store(Request $request)
@@ -54,26 +82,48 @@ class PrestamosController extends Controller
             'libro_id' => 'required|exists:libros,id',
         ]);
 
-
-        #Crear trasnsaccion
         \DB::beginTransaction();
 
-    try {
-        $prestamo = new Prestamo();
-        $prestamo->usuario_id = $request->input('usuario_id');
-        $prestamo->libro_id = $request->input('libro_id');
-        $prestamo->save();
+        try {
+            $prestamo = new Prestamo();
+            $prestamo->usuario_id = $request->input('usuario_id');
+            $prestamo->libro_id = $request->input('libro_id');
+            $prestamo->save();
 
-        $libro = Libro::findOrFail($request->input('libro_id'));
-        $libro->estatus = 1;
-        $libro->save();
+            $libro = Libro::findOrFail($request->input('libro_id'));
+            $libro->estatus = 1;
+            $libro->save();
 
-        \DB::commit();
-    } catch (\Exception $e) {
-        \DB::rollback();
-        return redirect()->route('prestamos.create')->with('error', 'Error al registrar el préstamo: ');
-    }
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return redirect()->route('prestamos.create')->with('error', 'Error al registrar el préstamo.');
+        }
 
         return redirect()->route('prestamos.index')->with('success', 'Préstamo registrado exitosamente.');
+    }
+
+    public function entregar($id)
+    {
+        \DB::beginTransaction();
+
+        try {
+            $prestamo = Prestamo::findOrFail($id);
+            $prestamo->estado = 'entregado';
+            $prestamo->fecha_entrega = now();
+            $prestamo->save();
+
+            if ($prestamo->libro) {
+                $prestamo->libro->estatus = 0;
+                $prestamo->libro->save();
+            }
+
+            \DB::commit();
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return redirect()->route('prestamos.index')->with('error', 'Error al entregar el libro');
+        }
+
+        return redirect()->route('prestamos.index')->with('success', 'Libro entregado con exito');
     }
 }

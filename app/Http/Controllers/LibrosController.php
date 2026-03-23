@@ -8,6 +8,12 @@ use App\Models\Libro;
 
 class LibrosController extends Controller
 {
+    public function index()
+    {
+        $libros = Libro::with('categoria')->get();
+        return view('libros.index', compact('libros'));
+    }
+
     public function create()
     {
         $categorias = Categoria::all();

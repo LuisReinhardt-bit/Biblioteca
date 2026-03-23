@@ -24,6 +24,9 @@
                     <th class="py-2 px-4 border-b">Libro</th>
                     <th class="py-2 px-4 border-b">Usuario</th>
                     <th class="py-2 px-4 border-b">Fecha</th>
+                    <th class="py-2 px-4 border-b">estatus</th>
+                    <th class="py-2 px-4 border-b">fecha_entrega</th>
+                    <th class="py-2 px-4 border-b">Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,12 +36,24 @@
                         <td class="py-2 px-4 border-b">{{ $prestamo->libro->titulo }} - {{ $prestamo->libro->autor }}</td>
                         <td class="py-2 px-4 border-b">{{ $prestamo->usuario->name }}</td>
                         <td class="py-2 px-4 border-b">{{ $prestamo->created_at->format('Y-m-d') }}</td>
+                        <td class="py-2 px-4 border-b">
+                            @if($prestamo->estado == 'pendiente')
+                            <span class="rounded-full bg-rose-50 px-2 py-1 text-xs font-semibold text-rose-700">Pendiente</span>
+                            @else
+                            <span class="rounded-full bg-emerald-50 px-2 py-1 text-xs font-semibold text-emerald-700">Entregado</span>
+                            @endif
+                        </td>
+                        
+
+                        <td class="py-2 px-4 border-b">{{ $prestamo->fecha_entrega ? $prestamo->fecha_entrega: '' }}</td>
+                        <td class="py-2 px-4 border-b">
+                             @if($prestamo->estado == 'pendiente')
+                            <a href="{{route('prestamos.entregar', $prestamo->id)}}" class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">Entregar</a>
+                            @endif
+                        </td>
+                       
                     </tr>
-                @empty
-                    <tr>
-                        <td class="py-2 px-4 border-b text-center" colspan="4">No hay préstamos registrados.</td>
-                    </tr>
-                @endforelse
+                @endforeach
             </tbody>
         </table>
     </div>

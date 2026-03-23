@@ -32,6 +32,7 @@ Route ::middleware(['auth', 'user.type:admin'])->group(function() {
     Route::put('/categorias/{id}', [CategoriasController::class, 'update'])->name('categorias.update');
     Route::delete('/categorias/{id}', [CategoriasController::class, 'destroy'])->name('categorias.destroy');
     
+    Route::get('/libros', [LibrosController::class, 'index'])->name('libros.index');
     Route::get('/libros/create', [LibrosController::class, 'create'])->name('libros.create');
     Route::post('/libros/store', [LibrosController::class, 'store'])->name('libros.store');
     Route::get('/libros/{id}/edit', [LibrosController::class, 'edit'])->name('libros.edit');
@@ -51,6 +52,7 @@ Route ::middleware(['auth', 'user.type:admin'])->group(function() {
     Route::post('/prestamos/buscar_usuario', [PrestamosController::class, 'buscar_usuario'])->name('prestamos.buscar_usuario');
     Route::post('/prestamos/select_libro', [PrestamosController::class, 'select_libro'])->name('prestamos.select_libro');
     Route::post('/prestamos/store', [PrestamosController::class, 'store'])->name('prestamos.store');
+    Route::get('/prestamos/{id}/entregar', [PrestamosController::class, 'entregar'])->name('prestamos.entregar');
 });
 
 Route:: middleware(['auth', 'user.type:user'])->group(function() {
